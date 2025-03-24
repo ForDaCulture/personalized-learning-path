@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ student.name }} - Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">{{ student.name }}</h1>
+        <p><strong>Grade Level:</strong> {{ student.grade_level }}</p>
+        <p><strong>Learning Style:</strong> {{ student.learning_style }}</p>
+        
+        <h2 class="mt-4">Generate Learning Path</h2>
+        <form method="POST" action="{{ url_for('generate_path', student_id=student.id) }}">
+            <div class="form-group">
+                <label for="grade">Enter Latest Grade (0-100)</label>
+                <input type="number" step="0.1" class="form-control" id="grade" name="grade" min="0" max="100" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Path</button>
+        </form>
+        
+        <h2 class="mt-4">Recommended Learning Path</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Module</th>
+                    <th>Level</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Date Recommended</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for path in paths %}
+                <tr>
+                    <td>{{ path.module.name }}</td>
+                    <td>{{ path.module.level }}</td>
+                    <td>{{ path.module.type }}</td>
+                    <td>{{ path.status }}</td>
+                    <td>{{ path.recommended_date.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Students</a>
+    </div>
+</body>
+</html>
